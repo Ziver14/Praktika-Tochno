@@ -1,8 +1,25 @@
 ﻿#include<iostream>
 #include<string>
 
-class Cat {
+class IPrintable {
 public:
+	virtual std::string Info()const = 0; //чистый виртуальный метод
+
+
+};
+
+class Cat:public IPrintable {
+public:
+	std::string Info()const override {
+
+		std::string result{};
+		result += name_;
+		result += ' ';
+		result += bride_;
+		result += ' ';
+		result += owner_;
+		return result;
+	}
 	Cat(): Cat(" "," "," ") { }
 	Cat(std::string name, std::string bride, std::string owner):name_(name),bride_(bride),owner_(owner) { }
 
@@ -36,6 +53,7 @@ public:
 			owner_ == other.owner_;
 
 	}
+	
 private:
 	std::string name_;
 	std::string bride_;
@@ -47,7 +65,7 @@ private:
 
 class Hotel {
 public:
-	Hotel() :cats_(nullptr), current_(0), capacity_(0){ }
+	//Hotel() :cats_(nullptr), current_(0), capacity_(0){ }
 
 	Hotel(int capacity) {
 		current_ = 0;
@@ -100,13 +118,21 @@ public:
 				result = i + 1;
 				break;
 			}
-		}
 		return result;
+		}
 	}
 private:
 	Cat* cats_;		//коты	
 	int capacity_;  //вместимость отеля
 	int current_;	//текущее колличество
+};
+
+
+class Printer {
+public:
+	static void Print(const IPrintable& obj) {
+		std::cout << obj.Info() << '\n';
+	}
 };
 
 
@@ -118,7 +144,8 @@ int main() {
 	Cat kitty;
 	kitty.Owner();
 
-
+	Cat fluffy{ "tom","british blue","Ivanov" };
+	Printer::Print(fluffy);
 
 	return 0;
 }
